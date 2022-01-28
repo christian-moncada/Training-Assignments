@@ -1,0 +1,75 @@
+a)salesman_master
+CREATE TABLE salesman_master(
+    salesman_no CHAR(6) PRIMARY KEY,
+    salesmanname VARCHAR(20) NOT NULL,
+    address1 VARCHAR(30) NOT NULL,
+    address2 VARCHAR(30),
+    city VARCHAR(20),
+    pincode number(6),
+    state VARCHAR(20),
+    sal_amt NUMBER(8,2) NOT NULL,
+    tgt_to_get NUMBER(6,2) NOT NULL,
+    ytd_sales NUMBER(6,2) NOT NULL,
+    remarks VARCHAR(60),
+    CONSTRAINT ck_salamt_val
+    CHECK (sal_amt != 0),
+    CONSTRAINT ck_tgttoget_val
+    CHECK (tgt_to_get != 0));
+b)sales_order
+CREATE TABLE sales_order(
+    s_order_no VARCHAR(6) PRIMARY KEY,
+    s_order_date TIMESTAMP,
+    client_no VARCHAR(6),
+    dely_addr VARCHAR(25),
+    salesman_no CHAR(6),
+    dely_type CHAR(1) DEFAULT 'F',
+    billed_yn CHAR(1) DEFAULT 'N',
+    dely_date DATE ,
+    order_status VARCHAR(10),
+    CONSTRAINT ck_sorderno_val
+    CHECK (s_order_no like 'O%'),
+    CONSTRAINT salesman_fk FOREIGN KEY(salesman_no) 
+    REFERENCES salesman_master(salesman_no),
+    CONSTRAINT ck_delytype_val
+    CHECK (dely_type in ('P','F')),
+    CONSTRAINT ck_billedyn_val
+    CHECK (billed_yn in ('Y','N')),
+    CONSTRAINT ck_delydate_val
+    CHECK (dely_date>s_order_date),
+    CONSTRAINT ck_order_status_val
+    CHECK (order_status in ('IP','F','BO','C')));
+c)sales_order_details
+CREATE TABLE sales_order_details (
+    s_order_no VARCHAR(6),
+    product_no VARCHAR(6),
+    qty_ordered NUMBER(8),
+    qty_disp NUMBER(8),
+    product_rate NUMBER(10,2),
+    CONSTRAINT salesorder_fk FOREIGN KEY(s_order_no) 
+    REFERENCES sales_order(s_order_no)),
+3)Data for salesman_master table 
+INSERT INTO salesman_master VALUES ('S00001','Kiran','A/14','Worli','Bombay','400002','MAH',3000,100,50,'Good');
+INSERT INTO salesman_master VALUES ('S00002','Manish','65','Nariman','Bombay','400001','MAH',3000,200,100,'Good');
+INSERT INTO salesman_master VALUES ('S00003','Ravi','P-7','Bandra','Bombay','400032','MAH',3000,200,100,'Good');
+4)Data for sales_order table
+INSERT INTO sales_order VALUES('O19001','12-Jan-2021','C00001',null,'S00001','F','N','20-Jan-2021','In Process');
+INSERT INTO sales_order VALUES('O19002','25-Jan-2021','C00002',null,'S00002','P','N','27-Jan-2021','Cancelled');
+INSERT INTO sales_order VALUES('O46865','18-Feb-2021','C00003',null,'S00003','F','Y','20-Feb-2021','Fulfilled');
+INSERT INTO sales_order VALUES('O19003','03-Apr-2021','C00001',null,'S00001','F','Y','07-Apr-2021','Fulfilled');
+INSERT INTO sales_order VALUES('O46866','20-May-2021','C00004',null,'S00002','P','Y','22-May-2021','Cancelled');
+INSERT INTO sales_order VALUES('O10008','24-May-2021','C00005',null,'S00004','F','N','26-May-2021','In Process');
+5)Data for sales_order_details table
+INSERT INTO sales_order_details VALUES('O19001','P00001',4,4,525);
+INSERT INTO sales_order_details VALUES('O19001','P07965',2,1,8400);
+INSERT INTO sales_order_details VALUES('O19001','P07885',2,1,5250);
+INSERT INTO sales_order_details VALUES('O19002','P00001',10,0,525);
+INSERT INTO sales_order_details VALUES('O46865','P07868',3,3,3150);
+INSERT INTO sales_order_details VALUES('O46865','P07885',3,1,5250);
+INSERT INTO sales_order_details VALUES('O46865','P00001',10,10,525);
+INSERT INTO sales_order_details VALUES('O46865','P03453',4,4,1050);
+INSERT INTO sales_order_details VALUES('O19003','P03453',2,2,1050);
+INSERT INTO sales_order_details VALUES('O19003','P06734',1,1,12000);
+INSERT INTO sales_order_details VALUES('O46866','P07965',1,0,8400);
+INSERT INTO sales_order_details VALUES('O46866','P07975',1,0,1050);
+INSERT INTO sales_order_details VALUES('O10008','P00001',10,5,525);
+INSERT INTO sales_order_details VALUES('O10008','P07975',5,4,1050);
