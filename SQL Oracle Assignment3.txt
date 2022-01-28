@@ -13,6 +13,8 @@ CREATE TABLE salesman_master(
     remarks VARCHAR(60),
     CONSTRAINT ck_salamt_val
     CHECK (sal_amt != 0),
+    CONSTRAINT ck_salemanno_val
+    CHECK (salesman_no LIKE 'S%'),
     CONSTRAINT ck_tgttoget_val
     CHECK (tgt_to_get != 0));
 b)sales_order
