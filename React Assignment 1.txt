@@ -1,0 +1,69 @@
+2.
+import React from 'react';
+export default class Welcome extends React.Component {
+    constructor(props){
+        super(props);
+        let firstname = this.props.name;
+        this.state={
+            name:firstname  
+        }
+    }
+      render(){
+        const mystyle = {  
+            color: "#5c9699",  
+            backgroundColor: "#a1ff9e",  
+            padding: "10px",  
+            fontFamily: "Arial",  
+            textAlign:"Center",
+            boxShadow:"1px 1px 5px black"
+          };  
+        return(
+            <div>
+                <h1 style={mystyle}>Welcome {this.state.name}</h1>
+            </div>
+        );
+    }
+}
+3.
+export default class AddNumbers extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={
+            first:null,
+            second:null,
+            sum:null
+        };
+    }
+    sumOfNum=()=>{
+        this.setState({sum:parseInt(this.state.first)+parseInt(this.state.second)})
+    }
+    render(){
+        return(
+            <div>
+                <input type="text" id="firstNum" placeholder='1st number' onChange={(e)=>{this.setState({first:e.target.value})}}/>
+                <input type="text" id="secondNum" placeholder='2nd number' onChange={(e)=>{this.setState({second:e.target.value})}}/>
+                <input type="text" id="result" value = {this.state.sum} placeholder='Result' readOnly/>
+                <button type="button" onClick={this.sumOfNum}>Sum</button>
+            </div>
+        );
+    }
+}
+4.
+export default class Card extends React.Component{
+    constructor(props){
+        super(props)
+        this.state={age:10}
+    }
+    render(){
+        return(
+            <div>
+                <p>{this.state.age}</p>
+            </div>
+        );
+    }
+}
+Card.propType ={
+    age:propType.number
+}
+5.
+Lightweight copy of original DOM
